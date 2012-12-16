@@ -1,0 +1,157 @@
+#! /usr/bin/make -f
+
+# Uncomment this to turn on verbose mode.
+#export DH_VERBOSE=1
+
+# we're using brace expansion
+SHELL := /bin/bash
+
+# packages names
+p_lib	= gnustep-corebase
+p_dev	= gnustep-corebase-dev
+p_dbg	= $(p_lib)-dbg
+
+# packages temp dirs
+d_inst	= $(CURDIR)/debian/inst
+d_lib	= $(CURDIR)/debian/$(p_lib)
+d_dev	= $(CURDIR)/debian/$(p_dev)
+d_dbg	= $(CURDIR)/debian/$(p_dbg)
+
+clean_files += $(d_inst)
+clean_files += $(d_lib)
+clean_files += $(d_dev)
+clean_files += $(d_dbg)
+
+# make some files executable
+dummy := $(shell chmod +x configure)
+
+# -----------------------------------------------------------------------------
+# GNUstep SETTINGS
+include /usr/share/GNUstep/debian/config.mk
+
+export GNUSTEP_MAKEFILES := /usr/share/GNUstep/Makefiles
+export GNUSTEP_INSTALLATION_DOMAIN := SYSTEM
+
+CPPFLAGS := $(shell dpkg-buildflags --get CPPFLAGS)
+CFLAGS := $(shell DEB_CFLAGS_MAINT_STRIP='-fstack-protector --param=ssp-buffer-size=4' dpkg-buildflags --get CFLAGS)
+LDFLAGS := $(shell dpkg-buildflags --get LDFLAGS)
+
+ifneq (,$(findstring noopt,$(DEB_BUILD_OPTIONS)))
+CFLAGS += -g
+endif
+
+
+# -----------------------------------------------------------------------------
+
+build: build-arch
+
+config: debian/configure-stamp
+clean_files += debian/configure-stamp
+
+debian/configure-stamp: configure
+	dh_testdir
+	./configure CPPFLAGS="$(CPPFLAGS)" CFLAGS="$(CFLAGS)" \
+	    LDFLAGS="$(LDFLAGS)" CC=clang CXX=clang
+
+	touch $@
+
+build-shared: debian/build-shared-stamp
+clean_files += debian/build-shared-stamp
+debian/build-shared-stamp: config
+	dh_testdir
+	@: # build shared libs
+	$(MAKE) ADDITIONAL_CFLAGS="$(CFLAGS)" CC=clang CXX=clang
+	touch $@
+
+
+# Build architecture dep
+build-arch: build-shared build-static build-debug
+
+build-static: debian/build-static-stamp
+clean_files += debian/build-static-stamp
+debian/build-static-stamp: config
+	dh_testdir
+	@: # build dev/static libs
+	$(MAKE) ADDITIONAL_CFLAGS="$(CFLAGS)" CC=clang CXX=clang
+	touch $@
+
+build-debug: debian/build-debug-stamp
+clean_files += debian/build-debug-stamp
+debian/build-debug-stamp: config
+	touch $@
+
+
+# Install all
+install: install-indep install-arch
+
+# Install architecture indep
+install-indep: install-common
+
+install-common: install-shared
+
+# Install architecture dep
+install-arch: install-shared install-static install-debug
+
+install-shared: build-shared
+	dh_testdir -p$(p_lib)
+	dh_testroot -p$(p_lib)
+	dh_prep -p$(p_lib)
+
+	@: # install shared version of libraries
+	$(MAKE) install DESTDIR=$(d_inst)
+	dh_install --list-missing --sourcedir=$(d_inst)
+
+install-static: install-shared build-static
+	dh_testdir -p$(p_dev)
+	dh_testroot -p$(p_dev)
+	dh_prep -p$(p_dev)
+
+	@: # install static version of libraries and headers
+	$(MAKE) install DESTDIR=$(d_inst)
+	dh_install --list-missing --sourcedir=$(d_inst)
+
+install-debug: build-debug
+	dh_testdir -p$(p_dbg)
+	dh_testroot -p$(p_dbg)
+	dh_prep -p$(p_dbg)
+
+# Build architecture-independent files here.
+binary-indep: debian/control build-indep install-indep
+	dh_testdir -i
+	dh_testroot -i
+	dh_installdeb -i
+	dh_gencontrol -i
+	dh_md5sums -i
+	dh_builddeb -i
+
+# Build architecture-dependent files here.
+binary-arch: debian/control build-arch install-arch
+	dh_testdir -a
+	dh_testroot -a
+	dh_lintian -a
+	dh_link -a
+	dh_strip -a --dbg-package=$(p_dbg)
+	dh_compress -s
+	dh_fixperms -s
+	dh_makeshlibs -p$(p_lib) -V
+	dh_installdeb -p$(p_lib)
+	dh_shlibdeps -p$(p_lib) -l$(d_lib)
+	dh_gencontrol -s
+	dh_md5sums -s
+	dh_builddeb -s
+
+
+clean: config
+	dh_testdir
+	dh_testroot
+	rm -rf $(clean_files)
+	$(MAKE) distclean
+	dh_clean
+
+
+binary: binary-indep binary-arch
+.PHONY: clean \
+	build build-indep build-arch build-shared build-static build-debug \
+	install install-indep install-arch \
+	install-shared install-static install-debug \
+	binary binary-indep binary-arch config
