@@ -273,12 +273,12 @@ static NSStringEncoding *nsencodings = NULL;
 
 - (BOOL) isEqual: (id) anObject
 {
-  return CFStringCompare (self, anObject, 0);
+  return CFStringCompare (self, anObject, 0) == kCFCompareEqualTo;
 }
 
 - (BOOL) isEqualToString: (NSString*) aString
 {
-  return CFStringCompare (self, aString, 0);
+  return CFStringCompare (self, aString, 0) == kCFCompareEqualTo;
 }
 
 - (NSUInteger) hash
