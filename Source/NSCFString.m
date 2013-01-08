@@ -487,6 +487,19 @@ static NSStringEncoding *nsencodings = NULL;
   return nil; // FIXME
 }
 
+- (NSString*) stringByAppendingString: (NSString*)aString
+{
+  unsigned len = [self length];
+  unsigned otherLength = [aString length];
+  NSZone  *z = [self zone];
+  unichar *s = NSZoneMalloc(z, (len+otherLength)*sizeof(unichar));
+
+  [self getCharacters: s range: ((NSRange){0, len})];
+  [aString getCharacters: s + len range: ((NSRange){0, otherLength})];
+
+  return (NSCFString*)CFStringCreateWithCharactersNoCopy (NULL, s, len + otherLength, NULL);
+}
+
 - (NSString*) stringByPaddingToLength: (NSUInteger)newLength
                            withString: (NSString*)padString
                       startingAtIndex: (NSUInteger)padIndex
