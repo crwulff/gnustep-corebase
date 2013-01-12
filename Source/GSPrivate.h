@@ -185,6 +185,30 @@ GSHashBytes (const void *bytes, CFIndex length)
   return ret;
 }
 
+CF_INLINE CFHashCode
+GSHashUnicode (const void *chars, CFIndex length)
+{
+  CFHashCode ret = 0;
+  if (length > 0)
+    {
+      register CFIndex idx;
+      register const UniChar *p = chars;
+
+      for (idx = 0 ; idx < length ; ++idx)
+        ret = (ret << 5) + ret + p[idx];
+
+      ret &= 0x0fffffff;
+      if (ret == 0)
+        ret = 0x0fffffff;
+    }
+  else
+    {
+      ret = 0x0ffffffe;
+    }
+
+  return ret;
+}
+
 
 
 struct __CFConstantString

@@ -199,9 +199,9 @@ static CFHashCode CFStringHash (CFTypeRef cf)
   CFStringRef str = (CFStringRef)cf;
   if (str->_hash == 0)
     {
-      CFIndex len = CFStringGetLength (str) *
-        (CFStringIsUnicode(str) ? sizeof(UniChar) : sizeof(char));
-      ((struct __CFString *)str)->_hash = GSHashBytes (str->_contents, len);
+      CFIndex len = CFStringGetLength (str);
+      ((struct __CFString *)str)->_hash = CFStringIsUnicode(str) ?
+	      GSHashUnicode(str->_contents, len) : GSHashBytes (str->_contents, len);
     }
 
   return str->_hash;
