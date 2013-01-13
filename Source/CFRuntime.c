@@ -32,6 +32,7 @@
 #include <limits.h>
 #include <stdlib.h>
 #include <string.h>
+#include <objc/runtime.h>
 
 
 
@@ -303,11 +304,13 @@ CFGetRetainCount (CFTypeRef cf)
 CFTypeID
 CFGetTypeID (CFTypeRef cf)
 {
+  CFTypeID typeID = (((uintptr_t)cf)&OBJC_SMALL_OBJECT_MASK) ? -1 : ((CFRuntimeBase*)cf)->_typeID;
+
   /* This is unsafe, but I don't see any other way of getting the typeID
      for this call. */
-  CF_OBJC_FUNCDISPATCH0(((CFRuntimeBase*)cf)->_typeID, CFTypeID, cf, "_cfTypeID");
+  CF_OBJC_FUNCDISPATCH0(typeID, CFTypeID, cf, "_cfTypeID");
   
-  return ((CFRuntimeBase*)cf)->_typeID;
+  return typeID;
 }
 
 CFHashCode
