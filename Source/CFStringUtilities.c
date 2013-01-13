@@ -117,7 +117,8 @@ CFStringFindWithOptionsAndLocale (CFStringRef str,
   UCollator *ucol;
   UStringSearch *usrch;
   UErrorCode err = U_ZERO_ERROR;
-  
+  Boolean needsRelease = false;
+
   if (rangeToSearch.length == 0)
     return false;
   
@@ -126,6 +127,12 @@ CFStringFindWithOptionsAndLocale (CFStringRef str,
   if (textLength == 0)
     return false;
   
+  if (CF_IS_OBJC(CFStringGetTypeID(), stringToFind))
+    {
+      stringToFind = CFStringCreateWithSubstring(NULL, stringToFind, CFRangeMake(0, textLength));
+      needsRelease = true;
+    }
+
   patternLength = rangeToSearch.length;
   pattern = CFAllocatorAllocate (alloc, patternLength * sizeof(UniChar), 0);
   CFStringGetCharacters (str, rangeToSearch, pattern);
@@ -137,7 +144,10 @@ CFStringFindWithOptionsAndLocale (CFStringRef str,
   usrch = usearch_openFromCollator (text, textLength, pattern, patternLength,
                                     ucol, NULL, &err);
   if (U_FAILURE(err))
-    return false;
+    {
+      if (needsRelease) CFRelease(stringToFind);
+      return false;
+    }
   
   /* FIXME: need to handle kCFCompareAnchored */
   if (searchOptions & kCFCompareBackwards)
@@ -152,6 +162,7 @@ CFStringFindWithOptionsAndLocale (CFStringRef str,
     {
       CFAllocatorDeallocate (alloc, pattern);
       CFAllocatorDeallocate (alloc, text);
+      if (needsRelease) CFRelease(stringToFind);
       return false;
     }
   end = usearch_getMatchedLength (usrch);
@@ -163,6 +174,7 @@ CFStringFindWithOptionsAndLocale (CFStringRef str,
   
   CFAllocatorDeallocate (alloc, pattern);
   CFAllocatorDeallocate (alloc, text);
+  if (needsRelease) CFRelease(stringToFind);
   return true;
 }
 
@@ -186,6 +198,9 @@ CFComparisonResult
 CFStringCompare (CFStringRef str1, CFStringRef str2,
                  CFStringCompareFlags compareOptions)
 {
+  if (str1 == str2) return kCFCompareEqualTo;
+  if (!str1 || !str2) return (str1) ? kCFCompareGreaterThan : kCFCompareLessThan;
+
   CFIndex len = CFStringGetLength (str1);
   return CFStringCompareWithOptionsAndLocale (str1, str2, CFRangeMake(0, len),
                                               compareOptions, NULL);
