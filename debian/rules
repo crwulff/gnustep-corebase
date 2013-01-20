@@ -36,9 +36,14 @@ CPPFLAGS := $(shell dpkg-buildflags --get CPPFLAGS)
 CFLAGS := $(shell DEB_CFLAGS_MAINT_STRIP='-fstack-protector --param=ssp-buffer-size=4' dpkg-buildflags --get CFLAGS)
 LDFLAGS := $(shell dpkg-buildflags --get LDFLAGS)
 
-ifneq (,$(findstring noopt,$(DEB_BUILD_OPTIONS)))
-CFLAGS += -g
-endif
+#ifneq (,$(findstring noopt,$(DEB_BUILD_OPTIONS)))
+CFLAGS += -ggdb
+CPPFLAGS += -ggdb
+#endif
+
+# Enable BLOCKS
+CFLAGS += -fblocks
+CPPFLAGS += -fblocks
 
 
 # -----------------------------------------------------------------------------
