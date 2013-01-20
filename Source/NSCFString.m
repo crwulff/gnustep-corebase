@@ -41,6 +41,19 @@
 NSCFTYPE_VARS
 @end
 
+@interface NSString (CoreBaseAdditions)
+- (CFTypeID) _cfTypeID;
+@end
+
+@implementation NSString (CoreBaseAdditions)
+
+- (CFTypeID) _cfTypeID
+{
+  return CFStringGetTypeID();
+}
+
+@end
+
 @implementation NSCFString
 
 /* Class variables */
