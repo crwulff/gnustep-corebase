@@ -246,8 +246,7 @@ static NSStringEncoding *nsencodings = NULL;
 
 - (NSDictionary*) propertyListFromStringsFileFormat
 {
-  // FIXME ???
-  return nil;
+  return [super propertyListFromStringsFileFormat];
 }
 
 - (NSComparisonResult) compare: (NSString*) aString
@@ -339,7 +338,9 @@ static NSStringEncoding *nsencodings = NULL;
   CFStringEncoding enc = CFStringConvertNSStringEncodingToEncoding (encoding);
   const char *cstr = CFStringGetCStringPtr (self, enc);
   if (!cstr)
-    return NULL; // FIXME
+  {
+    return [super cStringUsingEncoding: encoding];
+  }
   return cstr;
 }
 
@@ -399,8 +400,7 @@ static NSStringEncoding *nsencodings = NULL;
 
 - (BOOL) canBeConvertedToEncoding: (NSStringEncoding) encoding
 {
-  // FIXME
-  return NO;
+  return [super canBeConvertedToEncoding: encoding];
 }
 
 - (NSData*) dataUsingEncoding: (NSStringEncoding) encoding
@@ -431,8 +431,7 @@ static NSStringEncoding *nsencodings = NULL;
 
 - (const char*) fileSystemRepresentation
 {
-  // FIXME
-  return NULL;
+  return [super fileSystemRepresentation];
 }
 
 - (BOOL) getFileSystemRepresentation: (char*) buffer
