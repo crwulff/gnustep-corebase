@@ -164,11 +164,11 @@ GSHashPointer (const void *value)
 CF_INLINE CFHashCode
 GSHashBytes (const void *bytes, CFIndex length)
 {
-  CFHashCode ret = 0;
+  unsigned ret = 0;
   if (length > 0)
     {
       register CFIndex idx;
-      register const char *p = bytes;
+      register const unsigned char *p = bytes;
       
       for (idx = 0 ; idx < length ; ++idx)
         ret = (ret << 5) + ret + p[idx];
@@ -188,7 +188,7 @@ GSHashBytes (const void *bytes, CFIndex length)
 CF_INLINE CFHashCode
 GSHashUnicode (const void *chars, CFIndex length)
 {
-  CFHashCode ret = 0;
+  unsigned ret = 0;
   if (length > 0)
     {
       register CFIndex idx;
