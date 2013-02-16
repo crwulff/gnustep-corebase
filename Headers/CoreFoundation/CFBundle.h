@@ -42,6 +42,14 @@ void* CFBundleGetFunctionPointerForName(CFBundleRef bundle,
 void* CFBundleGetDataPointerForName(CFBundleRef bundle,
                                     CFStringRef functionName);
 
+CFBundleRef CFBundleGetMainBundle(void);
+
+CFDictionaryRef CFBundleGetInfoDictionary(CFBundleRef bundle);
+
+CFDictionaryRef CFBundleGetLocalInfoDictionary(CFBundleRef bundle);
+
+CFBundleRef _CFBundleGetMainBundleIfLooksLikeBundle(void);
+
 CF_EXTERN_C_END
 
 #endif /* __COREFOUNDATION_CFBUNDLE__ */

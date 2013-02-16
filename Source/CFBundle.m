@@ -67,3 +67,23 @@ void* CFBundleGetDataPointerForName(CFBundleRef bundle,
 #endif
 }
 
+CFBundleRef CFBundleGetMainBundle(void)
+{
+  return (CFBundleRef)[NSBundle mainBundle];
+}
+
+CFDictionaryRef CFBundleGetInfoDictionary(CFBundleRef bundle)
+{
+  return (CFDictionaryRef)[(NSBundle*)bundle infoDictionary];
+}
+
+CFDictionaryRef CFBundleGetLocalInfoDictionary(CFBundleRef bundle)
+{
+  return (CFDictionaryRef)[(NSBundle*)bundle localizedInfoDictionary];
+}
+
+CFBundleRef _CFBundleGetMainBundleIfLooksLikeBundle(void)
+{
+  return (CFBundleRef)[NSBundle mainBundle];
+}
+
