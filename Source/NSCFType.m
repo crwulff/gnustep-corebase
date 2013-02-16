@@ -25,6 +25,7 @@
 */
 
 #import <Foundation/NSObject.h>
+#import <Foundation/NSDictionary.h>
 
 #include "CoreFoundation/CoreFoundation.h"
 #include "NSCFType.h"
@@ -74,6 +75,19 @@ void NSCFInitialize (void)
 {
   return _kCFRuntimeNotATypeID;
 }
+@end
+
+@interface NSDictionary (CoreBaseAdditions)
+- (CFTypeID) _cfTypeID;
+@end
+
+@implementation NSDictionary (CoreBaseAdditions)
+
+- (CFTypeID) _cfTypeID
+{
+  return CFDictionaryGetTypeID();
+}
+
 @end
 
 @implementation NSCFType

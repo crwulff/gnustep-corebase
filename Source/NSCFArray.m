@@ -33,6 +33,19 @@
 NSCFTYPE_VARS
 @end
 
+@interface NSArray (CoreBaseAdditions)
+- (CFTypeID) _cfTypeID;
+@end
+
+@implementation NSArray (CoreBaseAdditions)
+
+- (CFTypeID) _cfTypeID
+{
+  return CFArrayGetTypeID();
+}
+
+@end
+
 @implementation NSCFArray
 + (void) load
 {
