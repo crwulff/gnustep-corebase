@@ -77,6 +77,121 @@ enum
   _kCFURLIsFileSystemPath = (1<<1)
 };
 
+/*
+ * Common File System Resource Keys
+ */
+#if MAC_OS_X_VERSION_10_6 <= MAC_OS_X_VERSION_MAX_ALLOWED
+CONST_STRING_DECL(kCFURLNameKey                              , "NSURLNameKey");
+CONST_STRING_DECL(kCFURLLocalizedNameKey                     , "NSURLLocalizedNameKey");
+CONST_STRING_DECL(kCFURLIsRegularFileKey                     , "NSURLIsRegularFileKey");
+CONST_STRING_DECL(kCFURLIsDirectoryKey                       , "NSURLIsDirectoryKey");
+CONST_STRING_DECL(kCFURLIsSymbolicLinkKey                    , "NSURLIsSymbolicLinkKey");
+CONST_STRING_DECL(kCFURLIsVolumeKey                          , "NSURLIsVolumeKey");
+CONST_STRING_DECL(kCFURLIsPackageKey                         , "NSURLIsPackageKey");
+CONST_STRING_DECL(kCFURLIsSystemImmutableKey                 , "NSURLIsSystemImmutableKey");
+CONST_STRING_DECL(kCFURLIsUserImmutableKey                   , "NSURLIsUserImmutableKey");
+CONST_STRING_DECL(kCFURLIsHiddenKey                          , "NSURLIsHiddenKey");
+CONST_STRING_DECL(kCFURLHasHiddenExtensionKey                , "NSURLHasHiddenExtensionKey");
+CONST_STRING_DECL(kCFURLCreationDateKey                      , "NSURLCreationDateKey");
+CONST_STRING_DECL(kCFURLContentAccessDateKey                 , "NSURLContentAccessDateKey");
+CONST_STRING_DECL(kCFURLContentModificationDateKey           , "NSURLContentModificationDateKey");
+CONST_STRING_DECL(kCFURLAttributeModificationDateKey         , "NSURLAttributeModificationDateKey");
+CONST_STRING_DECL(kCFURLLinkCountKey                         , "NSURLLinkCountKey");
+CONST_STRING_DECL(kCFURLParentDirectoryURLKey                , "NSURLParentDirectoryURLKey");
+CONST_STRING_DECL(kCFURLVolumeURLKey                         , "NSURLVolumeURLKey");
+CONST_STRING_DECL(kCFURLTypeIdentifierKey                    , "NSURLTypeIdentifierKey");
+CONST_STRING_DECL(kCFURLLocalizedTypeDescriptionKey          , "NSURLLocalizedTypeDescriptionKey");
+CONST_STRING_DECL(kCFURLLabelNumberKey                       , "NSURLLabelNumberKey");
+CONST_STRING_DECL(kCFURLLabelColorKey                        , "NSURLLabelColorKey");
+CONST_STRING_DECL(kCFURLLocalizedLabelKey                    , "NSURLLocalizedLabelKey");
+CONST_STRING_DECL(kCFURLEffectiveIconKey                     , "NSURLEffectiveIconKey");
+CONST_STRING_DECL(kCFURLCustomIconKey                        , "NSURLCustomIconKey");
+#endif
+#if MAC_OS_X_VERSION_10_7 <= MAC_OS_X_VERSION_MAX_ALLOWED
+CONST_STRING_DECL(kCFURLFileResourceIdentifierKey            , "NSURLFileResourceIdentifierKey");
+CONST_STRING_DECL(kCFURLVolumeIdentifierKey                  , "NSURLVolumeIdentifierKey");
+CONST_STRING_DECL(kCFURLPreferredIOBlockSizeKey              , "NSURLPreferredIOBlockSizeKey");
+CONST_STRING_DECL(kCFURLIsReadableKey                        , "NSURLIsReadableKey");
+CONST_STRING_DECL(kCFURLIsWritableKey                        , "NSURLIsWritableKey");
+CONST_STRING_DECL(kCFURLIsExecutableKey                      , "NSURLIsExecutableKey");
+CONST_STRING_DECL(kCFURLFileSecurityKey                      , "NSURLFileSecurityKey");
+CONST_STRING_DECL(kCFURLFileResourceTypeKey                  , "NSURLFileResourceTypeKey");
+#endif
+
+/*
+ * File Resource Types
+ */
+#if MAC_OS_X_VERSION_10_7 <= MAC_OS_X_VERSION_MAX_ALLOWED
+CONST_STRING_DECL(kCFURLFileResourceTypeBlockSpecial         , "NSURLFileResourceTypeBlockSpecial");
+CONST_STRING_DECL(kCFURLFileResourceTypeCharacterSpecial     , "NSURLFileResourceTypeCharacterSpecial");
+CONST_STRING_DECL(kCFURLFileResourceTypeDirectory            , "NSURLFileResourceTypeDirectory");
+CONST_STRING_DECL(kCFURLFileResourceTypeNamedPipe            , "NSURLFileResourceTypeNamedPipe");
+CONST_STRING_DECL(kCFURLFileResourceTypeRegular              , "NSURLFileResourceTypeRegular");
+CONST_STRING_DECL(kCFURLFileResourceTypeSocket               , "NSURLFileResourceTypeSocket");
+CONST_STRING_DECL(kCFURLFileResourceTypeSymbolicLink         , "NSURLFileResourceTypeSymbolicLink");
+CONST_STRING_DECL(kCFURLFileResourceTypeUnknown              , "NSURLFileResourceTypeUnknown");
+#endif
+
+/*
+ * File Property Keys
+ */
+#if MAC_OS_X_VERSION_10_6 <= MAC_OS_X_VERSION_MAX_ALLOWED
+CONST_STRING_DECL(kCFURLFileAllocatedSizeKey                 , "NSURLFileAllocatedSizeKey");
+CONST_STRING_DECL(kCFURLFileSizeKey                          , "NSURLFileSizeKey");
+CONST_STRING_DECL(kCFURLIsAliasFileKey                       , "NSURLIsAliasFileKey");
+#endif
+#if MAC_OS_X_VERSION_10_6 <= MAC_OS_X_VERSION_MAX_ALLOWED
+CONST_STRING_DECL(kCFURLIsMountTriggerKey                    , "NSURLIsMountTriggerKey");
+CONST_STRING_DECL(kCFURLTotalFileAllocatedSizeKey            , "NSURLTotalFileAllocatedSizeKey");
+CONST_STRING_DECL(kCFURLTotalFileSizeKey                     , "NSURLTotalFileSizeKey");
+#endif
+
+/*
+ * Volume Property Keys
+ */
+#if MAC_OS_X_VERSION_10_6 <= MAC_OS_X_VERSION_MAX_ALLOWED
+CONST_STRING_DECL(kCFURLVolumeLocalizedFormatDescriptionKey  , "NSURLVolumeLocalizedFormatDescriptionKey");
+CONST_STRING_DECL(kCFURLVolumeTotalCapacityKey               , "NSURLVolumeTotalCapacityKey");
+CONST_STRING_DECL(kCFURLVolumeAvailableCapacityKey           , "NSURLVolumeAvailableCapacityKey");
+CONST_STRING_DECL(kCFURLVolumeResourceCountKey               , "NSURLVolumeResourceCountKey");
+CONST_STRING_DECL(kCFURLVolumeSupportsPersistentIDsKey       , "NSURLVolumeSupportsPersistentIDsKey");
+CONST_STRING_DECL(kCFURLVolumeSupportsSymbolicLinksKey       , "NSURLVolumeSupportsSymbolicLinksKey");
+CONST_STRING_DECL(kCFURLVolumeSupportsHardLinksKey           , "NSURLVolumeSupportsHardLinksKey");
+CONST_STRING_DECL(kCFURLVolumeSupportsJournalingKey          , "NSURLVolumeSupportsJournalingKey");
+CONST_STRING_DECL(kCFURLVolumeIsJournalingKey                , "NSURLVolumeIsJournalingKey");
+CONST_STRING_DECL(kCFURLVolumeSupportsSparseFilesKey         , "NSURLVolumeSupportsSparseFilesKey");
+CONST_STRING_DECL(kCFURLVolumeSupportsZeroRunsKey            , "NSURLVolumeSupportsZeroRunsKey");
+CONST_STRING_DECL(kCFURLVolumeSupportsCaseSensitiveNamesKey  , "NSURLVolumeSupportsCaseSensitiveNamesKey");
+CONST_STRING_DECL(kCFURLVolumeSupportsCasePreservedNamesKey  , "NSURLVolumeSupportsCasePreservedNamesKey");
+#endif
+#if MAC_OS_X_VERSION_10_7 <= MAC_OS_X_VERSION_MAX_ALLOWED
+CONST_STRING_DECL(kCFURLVolumeNameKey                        , "NSURLVolumeNameKey");
+CONST_STRING_DECL(kCFURLVolumeLocalizedNameKey               , "NSURLVolumeLocalizedNameKey");
+CONST_STRING_DECL(kCFURLVolumeSupportsRootDirectoryDatesKey  , "NSURLVolumeSupportsRootDirectoryDatesKey");
+CONST_STRING_DECL(kCFURLVolumeSupportsVolumeSizesKey         , "NSURLVolumeSupportsVolumeSizesKey");
+CONST_STRING_DECL(kCFURLVolumeSupportsRenamingKey            , "NSURLVolumeSupportsRenamingKey");
+CONST_STRING_DECL(kCFURLVolumeSupportsAdvisoryFileLockingKey , "NSURLVolumeSupportsAdvisoryFileLockingKey");
+CONST_STRING_DECL(kCFURLVolumeSupportsExtendedSecurityKey    , "NSURLVolumeSupportsExtendedSecurityKey");
+CONST_STRING_DECL(kCFURLVolumeIsBrowsableKey                 , "NSURLVolumeIsBrowsableKey");
+CONST_STRING_DECL(kCFURLVolumeMaximumFileSizeKey             , "NSURLVolumeMaximumFileSizeKey");
+CONST_STRING_DECL(kCFURLVolumeIsEjectableKey                 , "NSURLVolumeIsEjectableKey");
+CONST_STRING_DECL(kCFURLVolumeIsRemovableKey                 , "NSURLVolumeIsRemovableKey");
+CONST_STRING_DECL(kCFURLVolumeIsInternalKey                  , "NSURLVolumeIsInternalKey");
+CONST_STRING_DECL(kCFURLVolumeIsAutomountedKey               , "NSURLVolumeIsAutomountedKey");
+CONST_STRING_DECL(kCFURLVolumeIsLocalKey                     , "NSURLVolumeIsLocalKey");
+CONST_STRING_DECL(kCFURLVolumeIsReadOnlyKey                  , "NSURLVolumeIsReadOnlyKey");
+CONST_STRING_DECL(kCFURLVolumeCreationDateKey                , "NSURLVolumeCreationDateKey");
+CONST_STRING_DECL(kCFURLVolumeURLForRemountingKey            , "NSURLVolumeURLForRemountingKey");
+CONST_STRING_DECL(kCFURLVolumeUUIDStringKey                  , "NSURLVolumeUUIDStringKey");
+#endif
+
+/*
+ * CFError userInfo Dictionary Keys
+ */
+#if MAC_OS_X_VERSION_10_7 <= MAC_OS_X_VERSION_MAX_ALLOWED
+CONST_STRING_DECL(kCFURLKeysOfUnsetValuesKey                 , "NSURLKeysOfUnsetValuesKey");
+#endif
+
 CF_INLINE Boolean
 CFURLIsDecomposable (CFURLRef url)
 {

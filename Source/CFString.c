@@ -133,6 +133,7 @@ enum
 CF_INLINE Boolean
 CFStringIsMutable (CFStringRef str)
 {
+  if (CF_IS_OBJC(_kCFStringTypeID, str)) return false;
   return
     ((CFRuntimeBase *)str)->_flags.info & _kCFStringIsMutable ? true : false;
 }
@@ -140,12 +141,14 @@ CFStringIsMutable (CFStringRef str)
 CF_INLINE Boolean
 CFStringIsUnicode (CFStringRef str)
 {
+  if (CF_IS_OBJC(_kCFStringTypeID, str)) return true;
   return ((CFRuntimeBase *)str)->_flags.info & _kCFStringIsUnicode ? true : false;
 }
 
 CF_INLINE Boolean
 CFStringIsInline (CFStringRef str)
 {
+  if (CF_IS_OBJC(_kCFStringTypeID, str)) return false;
   return
     ((CFRuntimeBase *)str)->_flags.info & _kCFStringIsInline ? true : false;
 }
@@ -153,6 +156,7 @@ CFStringIsInline (CFStringRef str)
 CF_INLINE Boolean
 CFStringHasNullByte (CFStringRef str)
 {
+  if (CF_IS_OBJC(_kCFStringTypeID, str)) return false;
   return
     ((CFRuntimeBase *)str)->_flags.info & _kCFStringHasNullByte ? true : false;
 }
@@ -201,9 +205,9 @@ static CFHashCode CFStringHash (CFTypeRef cf)
   CFStringRef str = (CFStringRef)cf;
   if (str->_hash == 0)
     {
-      CFIndex len = CFStringGetLength (str) *
-        (CFStringIsUnicode(str) ? sizeof(UniChar) : sizeof(char));
-      ((struct __CFString *)str)->_hash = GSHashBytes (str->_contents, len);
+      CFIndex len = CFStringGetLength (str);
+      ((struct __CFString *)str)->_hash = CFStringIsUnicode(str) ?
+	      GSHashUnicode(str->_contents, len) : GSHashBytes (str->_contents, len);
     }
 
   return str->_hash;
@@ -759,22 +763,31 @@ CFStringCreateWithSubstring (CFAllocatorRef alloc, CFStringRef str,
   void *contents;
   CFIndex len;
   CFStringEncoding enc;
-  
-  if (CFStringIsUnicode(str))
+
+  if (CF_IS_OBJC(_kCFStringTypeID, str))
     {
-      enc = UTF16_ENCODING;
-      len = range.length * sizeof(UniChar);
-      contents = ((UniChar*)str->_contents) + range.location;
+      len = CFStringGetLength (str);
+      contents = CFAllocatorAllocate (NULL, len * sizeof(UniChar), 0);
+      CFStringGetCharacters (str, range, contents);
+      return CFStringCreateWithCharactersNoCopy (alloc, contents, len, alloc);
     }
   else
     {
-      enc = kCFStringEncodingASCII;
-      len = range.length;
-      contents = ((char*)str->_contents) + range.location;
+      if (CFStringIsUnicode(str))
+        {
+          enc = UTF16_ENCODING;
+          len = range.length * sizeof(UniChar);
+          contents = ((UniChar*)str->_contents) + range.location;
+        }
+      else
+        {
+          enc = kCFStringEncodingASCII;
+          len = range.length;
+          contents = ((char*)str->_contents) + range.location;
+        }
+      return CFStringCreateWithBytes (alloc, (const UInt8*)contents, len, enc,
+        false);
     }
-  
-  return CFStringCreateWithBytes (alloc, (const UInt8*)contents, len, enc,
-    false);
 }
 
 CFDataRef

@@ -224,7 +224,7 @@ static NSStringEncoding *nsencodings = NULL;
   if (!CFStringFindCharacterFromSet (self,
       (CFCharacterSetRef)aSet, cfRange, (CFStringCompareFlags)mask,
       &ret))
-    ret = CFRangeMake (kCFNotFound, 0);
+    ret = CFRangeMake (NSNotFound, 0);
   
   return NSMakeRange (ret.location, ret.length);
 }
@@ -251,7 +251,7 @@ static NSStringEncoding *nsencodings = NULL;
   if (!CFStringFindWithOptionsAndLocale (self,
       aString, cfRange, (CFStringCompareFlags)mask,
       (CFLocaleRef)locale, &ret))
-    ret = CFRangeMake (kCFNotFound, 0);
+    ret = CFRangeMake (NSNotFound, 0);
   
   return NSMakeRange (ret.location, ret.length);
 }
@@ -265,8 +265,7 @@ static NSStringEncoding *nsencodings = NULL;
 
 - (NSDictionary*) propertyListFromStringsFileFormat
 {
-  // FIXME ???
-  return nil;
+  return [super propertyListFromStringsFileFormat];
 }
 
 - (NSComparisonResult) compare: (NSString*) aString

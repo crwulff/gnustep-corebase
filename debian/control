@@ -1,0 +1,44 @@
+Source: gnustep-corebase
+Section: gnustep
+Priority: optional
+Uploaders: Chris Wulff <crwulff@gmail.com>
+Maintainer: Chris Wulff <crwulff@gmail.com>
+Standards-Version: 3.9.3
+Build-Depends: debhelper (>= 7),
+	       clang (>= 3.1),
+	       libgnustep-base-dev (>= 1.24),
+	       libicu-dev
+Homepage: http://gnustep.org
+Vcs-Git: git://github.com/gnustep/gnustep-corebase.git
+Vcs-Browser: https://github.com/gnustep/gnustep-corebase
+
+Package: gnustep-corebase
+Section: libs
+Architecture: any
+Depends: ${shlibs:Depends},
+	 ${misc:Depends},
+	 ${gnustep:Depends}
+Description: GNUstep Objective-C library
+  Alternative objective-c library.
+
+Package: gnustep-corebase-dev
+Section: libdevel
+Architecture: any
+Depends: gnustep-corebase (= ${binary:Version}),
+	 ${misc:Depends},
+	 ${gnustep:Depends}
+Description: GNUstep CoreBase header files and development libraries
+ This package contains the header files and static libraries required
+ to build applications against the GNUstep CoreBase library.
+
+Package: gnustep-corebase-dbg
+Section: debug
+Architecture: any
+Priority: extra
+Depends: gnustep-corebase (= ${binary:Version}),
+	 ${misc:Depends},
+	 ${gnustep:Depends}
+Description: GNUstep CoreBase library - debugging symbols
+ This package contains the debigging symbols of the GNUstep CoreBase
+ Library.  This package can be used to provide symbol names to a debugger to
+ aid debugging.
