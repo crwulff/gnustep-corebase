@@ -891,16 +891,19 @@ CFStringGetBytes (CFStringRef str, CFRange range, CFStringEncoding enc,
           || enc == kCFStringEncodingUTF16BE
           || enc == kCFStringEncodingUTF16LE)
         {
-          
           UniChar *dst;
           
 		  // TODO: write a test for this branch,
 		  // untested code fixes have been made
           dst = (UniChar *)buffer;
           if (isExtRep && enc == kCFStringEncodingUTF16)
-            *dst++ = 0xFEFF;
-          converted = range.length = GS_MIN (range.length, maxBufLen / sizeof(UniChar));
-          CFStringGetCharacters (str, range, (UniChar*)buffer);
+            {
+              *dst = 0xFEFF;
+              dst++;
+            }
+          range.length = GS_MIN (range.length, maxBufLen / sizeof(UniChar));
+          converted = range.length;
+          CFStringGetCharacters (str, range, dst);
           if (enc == UTF16_ENCODING_TO_SWAP)
             {
               UniChar *end;

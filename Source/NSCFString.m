@@ -229,17 +229,6 @@ static NSStringEncoding *nsencodings = NULL;
   return NSMakeRange (ret.location, ret.length);
 }
 
-- (NSRange) rangeOfString: (NSString*) aString
-                  options: (NSUInteger) mask
-                    range: (NSRange) aRange
-{
-  // FIXME: Override this method because NSString doesn't do it right.
-  return [self rangeOfString: aString
-                     options: mask
-                       range: aRange
-                      locale: nil];
-}
-
 - (NSRange) rangeOfString: (NSString *) aString
                   options: (NSStringCompareOptions) mask
                     range: (NSRange) searchRange
@@ -263,10 +252,6 @@ static NSStringEncoding *nsencodings = NULL;
   return NSMakeRange (cfRange.location, cfRange.length);
 }
 
-- (NSDictionary*) propertyListFromStringsFileFormat
-{
-  return [super propertyListFromStringsFileFormat];
-}
 
 - (NSComparisonResult) compare: (NSString*) aString
                        options: (NSUInteger) mask
@@ -282,10 +267,10 @@ static NSStringEncoding *nsencodings = NULL;
                         locale: (id) locale
 {
   CFRange cfRange = CFRangeMake (compareRange.location, compareRange.length);
-  if ([locale isKindOfClass: [NSDictionary class]])
+  if (nil != locale
+      && ![locale isKindOfClass: [NSLocale class]])
     {
-      return [super compare: string options: mask range: compareRange
-        locale: locale];
+      locale = [NSLocale currentLocale];
     }
   return (NSComparisonResult)CFStringCompareWithOptionsAndLocale (self,
      string, cfRange, (CFStringCompareFlags)mask,
@@ -388,8 +373,7 @@ static NSStringEncoding *nsencodings = NULL;
     const CFStringEncoding* encodings;
     NSStringEncoding* converted;
     
-    
-encodings = CFStringGetListOfAvailableEncodings();
+    encodings = CFStringGetListOfAvailableEncodings();
     for (i = 0; encodings[i] != 0; i++)
       count++;
     
@@ -442,7 +426,6 @@ encodings = CFStringGetListOfAvailableEncodings();
 {
   return NSMakeRange (NSNotFound, 0); // FIXME, even NSString doesn't implement this
 }
-
 
 
 //
