@@ -104,6 +104,11 @@ CFPropertyListCreateFromXMLData (CFAllocatorRef allocator, CFDataRef xmlData,
                                  CFOptionFlags mutabilityOption,
                                  CFStringRef *errorString);
 
+CF_EXPORT CFPropertyListRef
+_CFPropertyListCreateFromXMLString (CFAllocatorRef alloc, CFStringRef string,
+                                    CFPropertyListFormat *format,
+                                    CFStringRef *errStr, CFOptionFlags opts);
+
 CF_EXPORT CFDataRef
 CFPropertyListCreateXMLData (CFAllocatorRef allocator,
                              CFPropertyListRef propertyList);

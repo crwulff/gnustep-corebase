@@ -410,7 +410,27 @@ CFPropertyListCreateFromXMLData (CFAllocatorRef alloc, CFDataRef data,
         *errStr = CFErrorCopyDescription (err);
       CFRelease (err);
     }
-  
+
+  return plist;
+}
+
+CFPropertyListRef
+_CFPropertyListCreateFromXMLString (CFAllocatorRef alloc, CFStringRef string,
+                                    CFPropertyListFormat *format,
+                                    CFStringRef *errStr, CFOptionFlags opts)
+{
+  CFPropertyListRef plist;
+  CFErrorRef err = NULL;
+  CFDataRef data = CFStringCreateExternalRepresentation(alloc, string, kCFStringEncodingUTF8, 0);
+
+  plist = CFPropertyListCreateWithData (alloc, data, opts, NULL, &err);
+  if (err)
+    {
+      if (errStr)
+        *errStr = CFErrorCopyDescription (err);
+      CFRelease (err);
+    }
+
   return plist;
 }
 
