@@ -29,7 +29,7 @@
 #include "NSCFType.h"
 #include "CoreFoundation/CFDictionary.h"
 
-@interface NSCFSet : NSMutableDictionary
+@interface NSCFDictionary : NSMutableDictionary
 NSCFTYPE_VARS
 @end
 
