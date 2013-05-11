@@ -500,6 +500,11 @@ static NSStringEncoding *nsencodings = NULL;
   CFStringReplaceAll (self, aString);
 }
 
+- (NSUInteger) hash
+{
+  return [super hash];
+}
+
 @end
 
 @implementation NSString (CoreBaseAdditions)
