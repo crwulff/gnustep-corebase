@@ -1362,10 +1362,10 @@ CFStringPad (CFMutableStringRef str, CFStringRef padString,
       "stringByPaddingToLength:withString:startingAtIndex:",
       length, padString, indexIntoPad);
 
-	CF_OBJC_VOIDCALLV(str, "setString:", padded);
-	CFRelease(padded);
+    CF_OBJC_VOIDCALLV(str, "setString:", padded);
+    CFRelease(padded);
 
-	return;
+    return;
   }
 
   if (padString == NULL && length < CFStringGetLength(str)) /* truncating */
