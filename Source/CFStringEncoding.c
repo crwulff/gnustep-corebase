@@ -674,6 +674,27 @@ CFStringGetNameOfEncoding (CFStringEncoding encoding)
   return NULL;
 }
 
+uint32_t
+CFStringEncodingUnicodeToBytes(uint32_t encoding, uint32_t flags,
+  const UniChar *characters, CFIndex numChars, CFIndex *usedCharLen,
+  uint8_t *bytes, CFIndex maxByteLen, CFIndex *usedByteLen)
+{
+  CFIndex needed = 0;
+  *usedByteLen = GSStringEncodingFromUnicode(encoding, bytes, maxByteLen, characters, numChars, flags >> 24, false, &needed);
+
+  return (needed < maxByteLen) ? kCFStringEncodingConversionSuccess : kCFStringEncodingInsufficientOutputBufferLength;
+}
+
+uint32_t
+CFStringEncodingBytesToUnicode(uint32_t encoding, uint32_t flags,
+  const uint8_t *bytes, CFIndex numBytes, CFIndex *usedByteLen,
+  UniChar *characters, CFIndex maxCharLen, CFIndex *usedCharLen)
+{
+  CFIndex needed = 0;
+  *usedCharLen = GSStringEncodingToUnicode(encoding, characters, maxCharLen, bytes, numBytes, false, &needed);
+
+  return (needed < maxCharLen) ? kCFStringEncodingConversionSuccess : kCFStringEncodingInsufficientOutputBufferLength;
+}
 
 
 /* Count the number of bytes that make up this UTF-8 code point */

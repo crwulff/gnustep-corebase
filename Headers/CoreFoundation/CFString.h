@@ -88,6 +88,13 @@ enum CFStringBuiltInEncodings
 #endif
 };
 
+enum {
+  kCFStringEncodingConversionSuccess = 0,
+  kCFStringEncodingInvalidInputStream = 1,
+  kCFStringEncodingInsufficientOutputBufferLength = 2,
+  kCFStringEncodingConverterUnavailable = 3
+};
+
 #if MAC_OS_X_VERSION_10_2 <= MAC_OS_X_VERSION_MAX_ALLOWED
 # define kCFStringEncodingInvalidId (0xffffffffU)
 #endif
@@ -587,8 +594,19 @@ CFStringGetCharacterFromInlineBuffer (CFStringInlineBuffer *buf, CFIndex idx)
   
   return buf->buffer[(idx - buf->bufferedRangeStart)];
 }
+
 /** @}
  */
+
+CF_EXPORT uint32_t
+CFStringEncodingUnicodeToBytes(uint32_t encoding, uint32_t flags,
+  const UniChar *characters, CFIndex numChars, CFIndex *usedCharLen,
+  uint8_t *bytes, CFIndex maxByteLen, CFIndex *usedByteLen);
+
+CF_EXPORT uint32_t
+CFStringEncodingBytesToUnicode(uint32_t encoding, uint32_t flags,
+  const uint8_t *bytes, CFIndex numBytes, CFIndex *usedByteLen,
+  UniChar *characters, CFIndex maxCharLen, CFIndex *usedCharLen);
 
 CF_EXTERN_C_END
 
